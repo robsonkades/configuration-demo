@@ -1,0 +1,30 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    url: ${DATABASE_HOST:jdbc:postgresql://localhost:5432/postgres?reWriteBatchedInserts=true}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 15
+      connectionTimeout: 3000
+      idleTimeout: 30000
+      maxLifetime: 1800000
+      auto-commit: true
+      pool-name: "spring-scheduler-distributed"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+          batch_versioned_data: true
+          fetch_size: 50
+        order_updates: true
+        order_inserts: true
+        generate_statistics: false
+        show_sql: false
+        format_sql: false
