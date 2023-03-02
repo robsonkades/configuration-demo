@@ -8,6 +8,7 @@ public class Message {
     public static String ORIGIN_HEADER = "X-Origin";
     public static String CONTEXT_HEADER = "X-Context-Id";
     public static String REQUEST_HEADER = "X-Request-Id";
+    public static String TENANT_HEADER = "X-Tenant-Id";
 
     private Map<String, Object> headers;
     private Object payload;

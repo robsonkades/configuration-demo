@@ -22,9 +22,18 @@ public class ServiceContext {
 
     private ThreadLocal<ServiceContextData> currentContextData = new ThreadLocal<>();
     private static AtomicReference<ServiceContext> instance = new AtomicReference<>();
+    private final Service service;
+
+    public ServiceContext(Service service) {
+        this.service = service;
+    }
 
     public static void install(ServiceContext context) {
         ServiceContext.instance.set(context);
+    }
+
+    public Service getService() {
+        return this.service;
     }
 
     public static ServiceContext get() {
@@ -51,6 +60,8 @@ public class ServiceContext {
         ServiceContextData serviceContextData = currentContextData.get();
         if (serviceContextData == null) {
             serviceContextData = new ServiceContextData();
+
+
             currentContextData.set(serviceContextData);
         }
         return serviceContextData;

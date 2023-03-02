@@ -16,23 +16,14 @@ public class TenantRequestInterceptor implements AsyncHandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        TenantContext.setCurrentTenant(request.getHeader("x-tenant"));
-
-        ServiceContext context = new ServiceContext();
-        context.setCurrentTenant(request.getHeader("x-tenant"));
-        context.setCurrentUserId(request.getHeader(Message.USER_ID_HEADER));
-
-        ServiceContext.install(new ServiceContext());
-
-
-        ServiceContext.get().w
-
+        ServiceContext.get().setCurrentTenant(request.getHeader(Message.TENANT_HEADER));
+        ServiceContext.get().setCurrentUserId(request.getHeader(Message.USER_ID_HEADER));
         return true;
     }
 
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        TenantContext.clear();
+        ServiceContext.get().clearCurrentMessage();
     }
 }

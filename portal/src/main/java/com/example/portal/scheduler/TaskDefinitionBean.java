@@ -1,6 +1,7 @@
 package com.example.portal.scheduler;
 
 import com.example.portal.TenantContext;
+import com.example.portal.scheduler.jobs.ServiceContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -20,8 +21,7 @@ public class TaskDefinitionBean implements Runnable {
 
     @Override
     public void run() {
-        try {
-            TenantContext.setCurrentTenant(taskDefinition.getTenant());
+        ServiceContext.get().runWithTenant(taskDefinition.getTenant(), () -> {
             transactionTemplate.execute(transactionStatus -> {
                 System.out.println("Tenant: " + taskDefinition.getTenant() + " Running with context: " + TenantContext.getCurrentTenant() + " thread: " + Thread.currentThread().getName());
 //                System.out.println("Running action: " + taskDefinition.getActionType());
@@ -33,11 +33,12 @@ public class TaskDefinitionBean implements Runnable {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                };
+                }
+                ;
                 return true;
             });
-        } finally {
-            TenantContext.clear();
-        }
+
+        });
+
     }
 }
