@@ -1,5 +1,6 @@
 package com.example.portal.scheduler.jobs;
 
+import com.example.portal.scheduler.TaskDefinition;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class TaskRegister {
         this.job = job;
     }
 
-    public void execute(String task, String cronExpression) {
-        taskScheduler.schedule(() -> job.execute(task), new CronTrigger(cronExpression, TimeZone.getTimeZone(TimeZone.getDefault().getID())));
+    public void execute(TaskDefinition taskDefinition) {
+        taskScheduler.schedule(() -> job.execute(taskDefinition), new CronTrigger(taskDefinition.getCronExpression(), TimeZone.getTimeZone(TimeZone.getDefault().getID())));
     }
 }

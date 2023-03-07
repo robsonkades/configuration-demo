@@ -2,10 +2,7 @@ package com.example.portal.scheduler;
 
 import com.example.portal.scheduler.jobs.TaskRegister;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/scheduler")
@@ -17,21 +14,20 @@ public class JobSchedulingController {
     @Autowired
     private TaskRegister taskRegister;
 
-    @Autowired
-    private TaskDefinitionBeanFactory taskDefinitionBeanFactory;
+//    @Autowired
+//    private TaskDefinitionBeanFactory taskDefinitionBeanFactory;
+
+
+//    @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
+//    public void scheduleATask(@RequestBody TaskDefinition taskDefinition) {
+//        TaskDefinitionBean taskDefinitionBean = taskDefinitionBeanFactory.create(taskDefinition);
+//        taskSchedulingService.scheduleATask(UUID.randomUUID().toString(), taskDefinitionBean, taskDefinition.getCronExpression());
+//    }
 
 
     @PostMapping(path = "/tasks", consumes = "application/json", produces = "application/json")
-    public void scheduleATask(@RequestBody TaskDefinition taskDefinition) {
-        TaskDefinitionBean taskDefinitionBean = taskDefinitionBeanFactory.create(taskDefinition);
-        taskSchedulingService.scheduleATask(UUID.randomUUID().toString(), taskDefinitionBean, taskDefinition.getCronExpression());
-    }
-
-
-    @PostMapping(path = "/tasks/new", consumes = "application/json", produces = "application/json")
     public void scheduleATaskNew(@RequestBody TaskDefinition taskDefinition) {
-        TaskDefinitionBean taskDefinitionBean = taskDefinitionBeanFactory.create(taskDefinition);
-        taskRegister.execute(taskDefinition.getTenant(), taskDefinition.getCronExpression());
+        taskRegister.execute(taskDefinition);
     }
 
     @GetMapping(path = "/tasks/{jobId}")

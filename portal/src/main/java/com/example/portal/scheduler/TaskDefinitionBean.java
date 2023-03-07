@@ -24,9 +24,6 @@ public class TaskDefinitionBean implements Runnable {
         ServiceContext.get().runWithTenant(taskDefinition.getTenant(), () -> {
             transactionTemplate.execute(transactionStatus -> {
                 System.out.println("Tenant: " + taskDefinition.getTenant() + " Running with context: " + TenantContext.getCurrentTenant() + " thread: " + Thread.currentThread().getName());
-//                System.out.println("Running action: " + taskDefinition.getActionType());
-//                System.out.println("With Data: " + taskDefinition.getData());
-
                 if (taskDefinition.getActionType().equals("SLOW")) {
                     try {
                         Thread.sleep(5000);
@@ -34,7 +31,6 @@ public class TaskDefinitionBean implements Runnable {
                         throw new RuntimeException(e);
                     }
                 }
-                ;
                 return true;
             });
 
